@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Zoo</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body{
+            background: linear-gradient(110.1deg, rgb(34, 126, 34) 2.9%, rgb(168, 251, 60) 90.3%);
+        }
+        .container{
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card{
+            color: aliceblue;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: saturate(150%) blur(20px);
+        }
+        .card-title{
+            width: 100vw;
+            height: 10vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card-image{
+            width: 100vw;
+            height: 70vh;
+            display: flex;
+            justify-content: center;
+        }
+
+        .card-image img{
+            width: 80%;
+            height: auto;
+            object-fit:cover;
+        }
+
+        button{
+            z-index: 1000;
+        }
+
+        #animal-name{
+            font-size: 25px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: 600;
+        }
+
+        .card-details{
+            width: 100vw;
+            height: 10vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card-footer{
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            height: 10vh;
+        }
+        #author-link{
+            color: aliceblue;
+            text-decoration: none;
+        }
+        .grid-table{
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+            grid-gap: 10px;
+        }
+
+        .card-body{
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+
+        .grid-table h3{
+            border: 1px solid white;
+        }
+
+        @media screen and (max-width: 450px) {
+            .card-title{
+                height: 10vh;
+            }
+            .card-details{
+                height: 30vh;
+            }
+            .card-footer{
+                height: 10vh;
+            }
+            .card-image{
+                width: 100vw;
+                height: 50vh;
+                display: flex;
+                justify-content: center;
+            }
+            .grid-table{
+                grid-template-columns: 1fr 1fr 1fr;
+                
+            }
+        }
+        .heart{
+            color: red;
+        }
+        #next-animal-button{
+            background-color: green;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            color: aliceblue;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title">
+                    <div id="animal-name">Hello world</div>
+                </div>
+                <div class="card-image">
+                    <img src="jungle.jpg" alt="" id="animal-image">
+                </div>
+                <div class="card-details">
+                    <div class="grid-table">
+                        <div>
+                            <p>Animal Type</p>
+                            <h3 id="animal-type"></h3>
+                        </div>
+                        <div>
+                            <p>Animal Habitat</p>
+                            <h3 id="animal-habitat"></h3>
+                        </div>
+                        <div>
+                            <p>Lifespan</p>
+                            <h3 id="animal-lifespan"></h3>
+                        </div>
+                        <div>
+                            <p>Weight</p>
+                            <h3 id="animal-weight"></h3>
+                        </div>
+                        <div>
+                            <p>Length</p>
+                            <h3 id="animal-length"></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="mailto:ykumat@gmail.com" id="author-link"><small>Made with <span class="heart">&hearts;</span> by ykumat</small></a> 
+                    <button onclick="getAnimal()" id="next-animal-button">Next Animal ></button>
+                </div>
+            </div>  
+            
+        </div>
+    </div>
+    <script>
+        async function getAnimal(){
+            document.getElementById("animal-image").src = ""
+            let response = await fetch('https://zoo-animal-api.herokuapp.com/animals/rand')
+            let animal = await response.json()
+            document.getElementById("animal-image").src = animal.image_link
+            document.getElementById("animal-name").innerHTML = animal.name
+            document.getElementById("animal-type").innerHTML = animal.animal_type
+            document.getElementById("animal-lifespan").innerHTML = animal.lifespan
+            document.getElementById("animal-habitat").innerHTML = animal.habitat
+            document.getElementById("animal-weight").innerHTML = `${animal.weight_min} - ${animal.weight_max}`
+            document.getElementById("animal-length").innerHTML =`${animal.length_min} - ${animal.length_max}`
+        }
+    </script>
+</body>
+</html>
